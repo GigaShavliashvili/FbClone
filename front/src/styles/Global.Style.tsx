@@ -62,7 +62,15 @@ import FiraGOLightwoff2 from "./fonts/firago-light/FiraGO-Light.woff2";
   font-weight: 300;
   font-style: normal;
 }
-
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 16px;
+  outline: none;
+}
 `
 
 export default GlobalAppStyles;
