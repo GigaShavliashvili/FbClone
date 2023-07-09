@@ -13,13 +13,28 @@ import TextFields from "../../components/Inputs/TextFields";
 import DefaultSelector from "../../components/Selector/DefaultSelector";
 import { month } from "../../assets/StaticData/SelectorData";
 import FbText from "../../components/FbText/FbText";
+import { AuthServices, RegisterBody } from "../../service/AuthService";
 
 interface RegistrationModalProps {
   open: boolean;
   setRegisterModal: (value: boolean) => void;
 }
 
+
 const RegisterView: React.FC<RegistrationModalProps> = (props) => {
+  const registerHandler = (e:any) =>{
+    e.preventDefault();
+   const loginData:RegisterBody = {
+    firstName:e.target[0].value,
+    lastName:e.target[2].value, 
+     email:e.target[4].value,  //yup formiki 
+    password:e.target[6].value,
+    birthDate:e.target[8].value + "/" + e.target[10].value + "/" + e.target[12].value,
+     gender:e.target[14].value,
+   }
+   AuthServices.register(loginData).then((res) => console.log(res))
+    }
+    const formRef = React.useRef<HTMLFormElement | null>(null);
   return (
     <Modal
       open={props.open}
@@ -29,7 +44,7 @@ const RegisterView: React.FC<RegistrationModalProps> = (props) => {
     >
       <div className="modal">
         <ModalHeader title="Sign Up" minTitle="It’s quick and easy." />
-        <form>
+        <form onSubmit={(e) => registerHandler(e)} ref={formRef}>
           <Stack direction="column" gap={2}>
             <Stack direction="row" gap={2}>
               <TextFields label="First name" size="small" width="191px" />
@@ -85,17 +100,17 @@ const RegisterView: React.FC<RegistrationModalProps> = (props) => {
                 name="row-radio-buttons-group"
               >
                 <FormControlLabel
-                  value="female"
+                  value="2"
                   control={<Radio />}
                   label="Female"
                 />
                 <FormControlLabel
-                  value="male"
+                  value="1"
                   control={<Radio />}
                   label="Male"
                 />
                 <FormControlLabel
-                  value="other"
+                  value="3"
                   control={<Radio />}
                   label="Other"
                 />
@@ -119,6 +134,7 @@ const RegisterView: React.FC<RegistrationModalProps> = (props) => {
         <Stack justifyContent="center" direction="row">
           <Button
             variant="contained"
+            onClick={() => formRef.current?.requestSubmit()}
             style={{
               background: "#36a420",
               marginTop: "22px",

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios, { AxiosResponse } from "axios";
 import { AuthBody } from "./Auth.styles";
 import FbText from "../../components/FbText/FbText";
 import { Card, Stack, Box, Divider, Button } from "@mui/material";
@@ -6,13 +7,24 @@ import TextFields from "../../components/Inputs/TextFields";
 import AuthFooter from "../../components/AuthFooter/AuthFooter";
 import { useNavigate } from "react-router-dom";
 import { RegisterView } from "../index";
+import $api from "../../utils/http";
 
 const AuthView: React.FC = () => {
   const [registerModal, setRegisterModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const loginHandler = (e: any) => {
     e.preventDefault();
-    console.log(e);
+
+    const body:{email: string, password: string} = {
+      email:e.target[0].value,
+      password:e.target[2].value
+    }
+    axios.post('http://localhost:3500/auth/login', body).then((res:AxiosResponse) => {
+      console.log(res);
+      localStorage.setItem("token",JSON.stringify(res.data.data.token));
+      localStorage.setItem("refreshtoken",JSON.stringify(res.data.data.refreshtoken));
+      navigate("/app/home")
+    })
   };
 
   const registerModalHandler = () => {};
@@ -31,6 +43,9 @@ const AuthView: React.FC = () => {
               <FbText color="#1877f2" fontSize={"54px"} font="FiraGO-Bold">
                 Cappbook
               </FbText>
+              <button type="button" onClick={() => $api.get("/auth/test").then((res) =>{
+                console.log(res)
+              }).catch((err) => console.log(err))}>testRefreshtoken</button>
               <FbText
                 color="#1c1e21"
                 lineQuantity="2"

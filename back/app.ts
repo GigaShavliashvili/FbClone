@@ -1,7 +1,16 @@
-
-const express = require('express');/* 
+import express from "express";
+import cors from "cors";
+import AuthRouter from "./router/AuthRouter";
+import errorHandler from "./middleware/Error";
+import dotenv from "dotenv";
+import AppRouter from "./router/AppRouter";
 const app = express();
-app.use("/", (req, res) => {
-    res.status(200).send("okay")
-})
-app.listen(4000) */
+dotenv.config();
+app.use(express.json());
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use("/auth", AuthRouter);
+app.use("/app", AppRouter);
+
+app.use(errorHandler);
+
+export default app;
