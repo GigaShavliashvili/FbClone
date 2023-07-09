@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { AuthView, HomeView, ProfileView,RegisterView } from "./View";
+import { AuthView, HomeView, ProfileView } from "./View";
 import AuthCheck from "./utils/AuthCheck";
 
 const router = createBrowserRouter([
@@ -14,10 +14,6 @@ const router = createBrowserRouter([
                 path:"login",
                 element:<AuthView/>,
             },
-            {
-                path:"register",
-                element:<RegisterView/>,
-            }
          ]
     },
     {
