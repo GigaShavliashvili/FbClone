@@ -5,6 +5,11 @@
   text-align: center;
 }
 
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

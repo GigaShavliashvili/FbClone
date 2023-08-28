@@ -4,13 +4,13 @@ import { NextFunction } from "express-serve-static-core";
 
 async function authCheck(_req: any, _res: any, _next: any) {
   const token = _req.get("Authorization").split(" ")[1];
-  console.log(token);
+/*   console.log(token); */
   jwt.verify(token, `${process.env.SECRET_KEY}`, (err: any, user: any) => {
     if (err) {
       _res.status(403).json(err);
       console.log(err);
     } else if (user) {
-      console.log(user);
+/*       console.log(user); */
       _next();
     }
   });

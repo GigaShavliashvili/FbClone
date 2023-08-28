@@ -2,7 +2,6 @@ import {
   ComparePasswords,
   createRefreshToken,
   createToken,
-  decodeToken,
 } from "./../utils/Auth/createToken";
 import asyncHandler from "express-async-handler";
 import { Request, Response } from "express";
@@ -11,6 +10,7 @@ import { NextFunction } from "express-serve-static-core";
 import { RegisterBody } from "../interface/user";
 import AuthLogic from "../DbLogic/AuthLogic";
 import { checkFields } from "../utils/Auth/checkFields";
+import { GlobalLogic } from "../DbLogic/GlobalLogic";
 
 export const loginController = asyncHandler(
   async (_req: Request, _res: Response, _next: NextFunction) => {
@@ -24,7 +24,7 @@ export const loginController = asyncHandler(
         )
       ); */
     }
-    const exestUser = await AuthLogic.findOne("email", _req.body.email);
+    const exestUser = await GlobalLogic.findOne("email", _req.body.email);
     if (exestUser.length) {
       console.info(exestUser[0], "authcontroler 29");
       const comparePass = await ComparePasswords(
@@ -43,10 +43,20 @@ export const loginController = asyncHandler(
           },
         });
       } else {
-        return _res.status(404).json({ msg: "password  is incorrect!" });
+        return _next(
+          new ErrorResponse(
+            `password is incorrect1`,
+            400
+          )
+        );
       }
     } else {
-      _res.status(404).json({ msg: `${_req.body.email} dont not found!` });
+     return _next(
+        new ErrorResponse(
+          `${_req.body.email} font found!`,
+          400
+        )
+      );
     }
   }
 );
@@ -57,24 +67,21 @@ export const registerController = asyncHandler(
     _res: Response,
     _next: NextFunction
   ) => {
-    console.log(_req.body);
     const undifinedValues = checkFields(_req.body);
     if (undifinedValues.length) {
-      return _res.status(400).json({ msgs: undifinedValues }); /* _next(
-        new ErrorResponse(
-          `${Object.keys(_req.body)[undifinedValues[0]]} is undifined`,
-          400
-        )
-      ); */
+      return _res.status(400).json({ msgs: undifinedValues }); 
     } else {
-      const exestUser = await AuthLogic.findOne("email", _req.body.email);
-      console.log(exestUser);
+      const exestUser = await GlobalLogic.findOne("email", _req.body.email);
       if (!exestUser.length) {
         const newUser = await AuthLogic.createUser(_req.body);
-        console.info(newUser);
         return _res.status(200).json({ success: true, data: newUser.id });
       } else {
-        return _res.status(400).json({ msg: "this email already exists" });
+        return _next(
+          new ErrorResponse(
+            `this email already exists`,
+            400
+          )
+        );
       }
     }
   }

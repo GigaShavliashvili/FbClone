@@ -9,11 +9,10 @@ const AuthLogic = {
       data: { ...body, password: HashPassword(body.password) },
     });
   }),
-  findOne: asyncHandler(async (key: string, value: string) => {
-    return await prisma.user.findMany({
-      where: {
-        [key]: value,
-      },
+
+  addAvatar: asyncHandler(async (body: { userId: number; avatar: string }) => {
+    return await prisma.avatar.create({
+      data: body,
     });
   }),
 };
