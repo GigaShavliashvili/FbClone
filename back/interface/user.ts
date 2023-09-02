@@ -4,7 +4,7 @@ export interface RegisterBody {
   email: string;
   password: string;
   birthDate: string;
-  gender: string;
+  genderId: number
 }
 
 export interface createTokenBody extends RegisterBody {
@@ -16,4 +16,10 @@ export interface createTokenBody extends RegisterBody {
 export interface loginBody {
   email: string;
   password: string;
+}
+export interface createAvatar {
+  id: number,
+  avatar: string,
+  isProfile:boolean
+  userId:number
 }

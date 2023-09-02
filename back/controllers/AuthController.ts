@@ -17,24 +17,19 @@ export const loginController = asyncHandler(
     const undifinedValues = checkFields(_req.body);
 
     if (undifinedValues.length) {
-      return _res.status(400).json({ msgs: undifinedValues }); /* _next(
-        new ErrorResponse(
-          `${Object.keys(_req.body)[undifinedValues[0]]} is undifined`,
-          400
-        )
-      ); */
+      return _res.status(400).json({ msgs: undifinedValues });
     }
     const exestUser = await GlobalLogic.findOne("email", _req.body.email);
-    if (exestUser.length) {
-      console.info(exestUser[0], "authcontroler 29");
+    if (exestUser) {
+      console.info(exestUser, "authcontroler 29");
       const comparePass = await ComparePasswords(
         _req.body.password,
-        exestUser[0].password
+        exestUser.password
       );
       if (comparePass) {
-        delete exestUser[0]["password"];
-        const token = createToken(exestUser[0]);
-        const refreshtoken = createRefreshToken(exestUser[0]);
+        delete exestUser["password"];
+        const token = createToken(exestUser);
+        const refreshtoken = createRefreshToken(exestUser);
         return _res.status(200).json({
           success: true,
           data: {
@@ -72,7 +67,7 @@ export const registerController = asyncHandler(
       return _res.status(400).json({ msgs: undifinedValues }); 
     } else {
       const exestUser = await GlobalLogic.findOne("email", _req.body.email);
-      if (!exestUser.length) {
+      if (!exestUser) {
         const newUser = await AuthLogic.createUser(_req.body);
         return _res.status(200).json({ success: true, data: newUser.id });
       } else {

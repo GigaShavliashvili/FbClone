@@ -10,7 +10,7 @@ const AuthLogic = {
     });
   }),
 
-  addAvatar: asyncHandler(async (body: { userId: number; avatar: string }) => {
+  addAvatar: asyncHandler(async (body: { userId: number; avatar: string,isProfile:boolean }) => {
     return await prisma.avatar.create({
       data: body,
     });

@@ -16,15 +16,24 @@ lastName String
 email   String   @unique
 password String
 birthDate String
-gender String
-avatar Avatar[] 
+gender    Gender?  @relation(fields: [genderId], references: [id])
+genderId  Int?
+avatarId Int?
+avatar Avatar? @relation(fields: [avatarId], references: [id])
 created_at DateTime @default(now())
 updated_at DateTime @updatedAt
+}
+
+model Gender {
+  id Int @id @default(autoincrement())
+  gender String
+  users    User[]
 }
 
 model Avatar {
   id      Int     @id @default(autoincrement())
   avatar     String  @db.Text
-  userId  Int
-  user    User    @relation(fields: [userId], references: [id])
+  isProfile Boolean @default(false)
+  userId Int
+  users    User[]
 }

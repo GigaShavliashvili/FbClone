@@ -13,7 +13,7 @@ export const ComparePasswords = async (
   return await bcrypt.compare(password, hashed_password);
 };
 export const createToken = (user: createTokenBody) =>
-  jwt.sign(user, `${process.env.SECRET_KEY}`, { expiresIn: "30s" });
+  jwt.sign(user, `${process.env.SECRET_KEY}`, { expiresIn: "1h" });
 
 export const createRefreshToken = (user: createTokenBody) =>
   jwt.sign(user,  `${process.env.REFRESH_SECRET_KEY}`, { expiresIn: "8h" });
