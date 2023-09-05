@@ -1,9 +1,11 @@
 import React from 'react'
 import FbText from '../FbText/FbText'
 import { Divider } from '@mui/material'
+import { LangugaStorage } from '../../StateMenegment/global.store'
 
 
 const AuthFooter:React.FC = () => {
+  const {changeLn} = LangugaStorage()
   return (
     <div style={{width:"60%", display:"flex", flexDirection:"column",gap:"1rem", padding:"20px"}}>
             <FbText 
@@ -13,8 +15,12 @@ const AuthFooter:React.FC = () => {
      fontSize={"13px"}
      font="FiraGo-Regular"
     >
-        English (US)
+<span style={{cursor:"pointer"}} onClick={() =>changeLn("en")}>
+English (US)
+</span>
+<span style={{cursor:"pointer"}} onClick={() => changeLn("geo")}>
 ქართული
+</span>
 Русский
 Türkçe
 Deutsch

@@ -1,6 +1,6 @@
 import { RegisterBody } from "../../interface/user";
 
-export const checkFields = (body: RegisterBody) => {
+export const checkFields = (body: any) => {
   let undifinedValues: any = [];
   Object.values(body).forEach((value, key) => {
     

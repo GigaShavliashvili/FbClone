@@ -8,10 +8,16 @@ import AuthFooter from "../../components/AuthFooter/AuthFooter";
 import { useNavigate } from "react-router-dom";
 import { RegisterView } from "../index";
 import $api from "../../utils/http";
+import MyTextInput from "../../components/myInputs/MyTextInput";
+import LanguageProvider from "../../Language/LanguageProvider";
+import { emailErrorMessage, emailPattern,  numericErrorMessage, numericPattern } from "../../components/RegexPatterns/email";
+import MyForm from "../../components/myForm/MyForm";
+import { loginFields } from "../../components/InputObj/LoginObj";
 
 const AuthView: React.FC = () => {
   const [registerModal, setRegisterModal] = useState<boolean>(false);
   const navigate = useNavigate();
+  const ln = LanguageProvider()
   const loginHandler = (e: any) => {
     e.preventDefault();
 
@@ -69,15 +75,21 @@ const AuthView: React.FC = () => {
                   marginTop: "8rem",
                 }}
               >
-                <form onSubmit={(e) => loginHandler(e)}>
+                {/* <form onSubmit={(e) => loginHandler(e)}>
                   <Stack spacing={2} direction="column">
-                    <TextFields
+                     <TextFields
                       type="email"
                       id="outlined-basic"
                       required
                       error={false}
                       label="Email or phone number"
-                    />
+                    /> 
+                    <MyTextInput required 
+                       validationPatterns={[
+                        { pattern: emailPattern, errorMessage: emailErrorMessage },
+                        { pattern: numericPattern, errorMessage: numericErrorMessage },
+                      ]}
+                    name="login" placeHolder={ln.loginPlaceHolder}/>
                     <TextFields
                       id="outlined-basic"
                       label="Password"
@@ -86,14 +98,23 @@ const AuthView: React.FC = () => {
                     />
                     <Button variant="contained" type="submit">
                       <FbText fontSize={"20px"} font="FiraGO-bold">
-                        Log in
+                        {ln.loginPlaceHolder}
                       </FbText>
                     </Button>
                     <Stack justifyContent="center" direction="row">
                       <a>forget Password?</a>
                     </Stack>
                   </Stack>
-                </form>
+                </form> */}
+                <MyForm  loginFields={loginFields} interface={undefined} onFinish={(values: any) =>{
+                 console.log(values)
+                }} >
+                     <Button variant="contained" type="submit">
+                      <FbText fontSize={"20px"} font="FiraGO-bold">
+                        {ln.loginPlaceHolder}
+                      </FbText>
+                    </Button>
+                </MyForm>
                 <Divider style={{ padding: "12px 0px" }} />
                 <Stack justifyContent="center" direction="row">
                   <Button

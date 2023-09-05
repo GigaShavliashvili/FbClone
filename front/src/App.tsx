@@ -3,8 +3,6 @@ import router from "./router";
 import GlobalAppStyles  from "./styles/Global.Style";
 
 function App() {
-console.log("hello world!");
-
   return (
     <> 
         <GlobalAppStyles/>

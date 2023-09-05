@@ -25,7 +25,7 @@ $api.interceptors.response.use(
 
       const resp = await refreshToken();
       const access_token = resp.data;
-      console.log(access_token, "refresh token worked");
+   /*    console.log(access_token, "refresh token worked"); */
       if (access_token) {
         localStorage.setItem("token", JSON.stringify(access_token));
       }
@@ -41,7 +41,7 @@ const refreshToken = async () => {
     const resp = await axios.post("http://localhost:3500/auth/refreshtoken", {
       refreshToken: JSON.parse(localStorage.getItem("refreshtoken") ?? ""),
     });
-    console.log("refresh token", resp.data);
+ /*    console.log("refresh token", resp.data); */
     return resp.data;
   } catch (e) {
     console.log("Error", e);
