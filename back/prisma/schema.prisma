@@ -8,19 +8,20 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   firstName  String
   lastName   String
-  email      String   @unique
+  email      String    @unique
   password   String
   birthDate  String
-  gender     Gender?  @relation(fields: [genderId], references: [id])
+  gender     Gender?   @relation(fields: [genderId], references: [id])
   genderId   Int?
   avatarId   Int?
-  avatar     Avatar?  @relation(fields: [avatarId], references: [id])
+  avatar     Avatar?   @relation(fields: [avatarId], references: [id])
   posts      Post[]
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  comment    Comment[]
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
 }
 
 model Gender {
@@ -38,11 +39,26 @@ model Avatar {
 }
 
 model Post {
-  id        Int    @id @default(autoincrement())
-  title     String? @db.Text
-  imagePath String?
-  authorId  Int
-  author    User   @relation(fields: [authorId], references: [id])
-    created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id         Int       @id @default(autoincrement())
+  title      String?   @db.Text
+  imagePath  String?
+  authorId   Int
+  author     User      @relation(fields: [authorId], references: [id])
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  comment    Comment[]
+}
+
+model Comment {
+  id        Int       @id @default(autoincrement())
+  text      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  parentId  Int? // Self-referencing field to store the parent comment's ID
+  postId    Int
+  authorId  Int // Self-referencing field to store the
+  author    User      @relation(fields: [authorId], references: [id])
+  post      Post      @relation(fields: [postId], references: [id])
+  parent    Comment?  @relation("ChildComments", fields: [parentId], references: [id])
+  children  Comment[] @relation("ChildComments")
 }

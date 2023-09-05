@@ -1,6 +1,5 @@
-import { AuthBody } from "./../../front/src/View/auth/Auth.styles";
-import asyncHandler from "express-async-handler";
 import { PrismaClient } from "@prisma/client";
+import asyncHandler from "express-async-handler";
 const prisma = new PrismaClient();
 export const GlobalLogic = {
   findOne: asyncHandler(
