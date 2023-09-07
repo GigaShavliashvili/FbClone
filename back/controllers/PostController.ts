@@ -3,6 +3,7 @@ import asyncHandler from "express-async-handler";
 import { Post } from "../interface/post";
 import ErrorResponse from "../utils/errorHandler";
 import { PostLogic } from "../DbLogic/PostLogic";
+import { organizeComments } from "../utils/organizeComments";
 export const addPost = asyncHandler(
   async (_req: Request<{}, {}, Post>, _res: Response, _next: NextFunction) => {
     if (!_req.body.title && !_req.body.image) {
@@ -25,8 +26,14 @@ if( _req.query.id){
   const from = _req.query.from ? +_req.query.from : 0
   const limit = _req.query.limit ? +_req.query.limit : 30
   const usersPosts = await PostLogic.getSignleUsersPosts({id:+_req.query.id, limit, from})
+  const orderedUserPostWithComments = usersPosts.map((el:any) =>{
+    return{
+      ...el,
+      comment:organizeComments(el.comment)
+    }
+  })
 /*   const groupTest = await PostLogic.goupByTest() */
-  return _res.status(200).json({success:true, data:usersPosts })
+  return _res.status(200).json({success:true, data:orderedUserPostWithComments })
 }else {
  return _next(new ErrorResponse("user id is required!", 400))
 }

@@ -25,18 +25,22 @@ export const PostLogic = {
           id: true,
           title: true,
           comment: {
-            select: {
+            select: {    
+parentId:true,
+id:true,
+text:true,
               author: {
                 select: {
                   firstName: true,
                   lastName: true,
-                  avatar: true,
+                  avatar: {
+                    select:{
+                      avatar:true,
+                      userId:true
+                    }
+                  },
                 },
               },
-              children: true,
-              text: true,
-              createdAt: true,
-              updatedAt: true,
             },
           },
           imagePath: true,
